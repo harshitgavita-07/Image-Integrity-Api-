@@ -1,0 +1,31 @@
+from fastapi import FastAPI
+from pydantic import BaseModel, HttpUrl
+
+app = FastAPI(title="AI Trust Gateway - Image Verification")
+
+
+class ImageVerifyRequest(BaseModel):
+    image_url: HttpUrl
+
+
+class ImageVerifyResponse(BaseModel):
+    face_detected: bool
+    morph_probability: float  # 0–1
+    synthetic_likelihood: float  # 0–1
+    metadata_suspicious: bool
+
+
+@app.post("/api/image/verify", response_model=ImageVerifyResponse)
+async def verify_image(payload: ImageVerifyRequest):
+    """
+    Minimal placeholder logic.
+    Replace with real image integrity checks later.
+    """
+    # For now, return deterministic dummy values
+    # so the API is always working and testable.
+    return ImageVerifyResponse(
+        face_detected=True,
+        morph_probability=0.12,
+        synthetic_likelihood=0.08,
+        metadata_suspicious=False,
+    )
